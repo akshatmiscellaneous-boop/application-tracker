@@ -366,12 +366,14 @@
     font-family: 'Special Elite', monospace;
     font-size: 0.72rem;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.8px;
     padding: 0.3rem 0.7rem;
     border: 2px solid currentColor;
     border-radius: 4px;
     transform: rotate(-3deg);
-    white-space: nowrap;
+    white-space: normal;
+    max-width: 220px;
+    line-height: 1.3;
   }
 
   .stamp-applied { color: var(--stamp-blue); }
@@ -614,6 +616,16 @@ const STATUS_CLASS = {
   'Rejected': 'stamp-rejected'
 };
 
+// The underlying app.status value stays plain ("Applied", "Offer", etc) so
+// all the follow-up logic elsewhere keeps working. This map is purely for
+// what gets DISPLAYED on the stamp badge.
+const STATUS_DISPLAY = {
+  'Applied': "Let's keep our hopes high 🤞",
+  'Interviewing': 'You got it, buddy! 🔥',
+  'Offer': 'Hooraayyy! 🎉',
+  'Rejected': 'Their loss, not yours 💪'
+};
+
 // Load saved data when the page opens
 async function loadApplications() {
   const statusEl = document.getElementById('status-msg');
@@ -720,7 +732,7 @@ function render() {
             <p class="entry-role">${escapeHtml(app.role)} <span class="channel-tag">· ${escapeHtml(app.channel || 'Other')}</span></p>
             <div class="entry-meta">
               <span>Applied ${days === 0 ? 'today' : days + ' day' + (days === 1 ? '' : 's') + ' ago'}</span>
-              <span class="stamp ${stampClass}">${app.status}</span>
+              <span class="stamp ${stampClass}">${STATUS_DISPLAY[app.status] || app.status}</span>
             </div>
             ${hasContact ? `<div class="contact-line">Contact: ${escapeHtml(app.contactName || '—')}${app.contactDetail ? ' · ' + escapeHtml(app.contactDetail) : ''}</div>` : ''}
           </div>
