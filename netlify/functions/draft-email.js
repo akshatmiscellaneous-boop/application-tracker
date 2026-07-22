@@ -27,7 +27,7 @@ exports.handler = async function (event) {
     // The website sends us just the "prompt" text it wants a draft for.
     const { prompt } = JSON.parse(event.body);
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
 
     const response = await fetch(geminiUrl, {
       method: 'POST',
