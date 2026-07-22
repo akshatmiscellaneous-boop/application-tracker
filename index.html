@@ -158,7 +158,7 @@
   .form-footer {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 1rem;
     flex-wrap: wrap;
   }
@@ -508,14 +508,17 @@
         <input type="text" id="in-contact-detail" placeholder="e.g. priya@zomato.com">
       </div>
     </div>
-    <div class="form-footer">
-      <div class="threshold-control">
-        Follow-up 1 after
+    <div class="form-row" style="grid-template-columns: 1fr 1fr;">
+      <div>
+        <label for="in-threshold1">Remind me to follow up after (days)</label>
         <input type="number" id="in-threshold1" value="7" min="1" max="60">
-        days silence · Follow-up 2 after
-        <input type="number" id="in-threshold2" value="5" min="1" max="60">
-        more days
       </div>
+      <div>
+        <label for="in-threshold2">Remind me for a 2nd follow-up after (days)</label>
+        <input type="number" id="in-threshold2" value="5" min="1" max="60">
+      </div>
+    </div>
+    <div class="form-footer">
       <button class="btn-add" id="btn-add">Add application</button>
     </div>
   </div>
