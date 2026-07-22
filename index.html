@@ -831,7 +831,7 @@ async function deleteEntry(id) {
 
 function updateContactFieldVisibility() {
   const channel = document.getElementById('in-channel').value;
-  const showContact = channel === 'LinkedIn DM' || channel === 'Cold Email';
+  const showContact = channel === 'LinkedIn DM' || channel === 'Cold Email' || channel === 'Other';
   document.getElementById('contact-name-wrap').style.display = showContact ? 'block' : 'none';
   document.getElementById('contact-detail-wrap').style.display = showContact ? 'block' : 'none';
 }
