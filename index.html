@@ -21,9 +21,9 @@
     --text-muted: #7A6F55;
     --cream-text: #F5EFE0;
   }
-
+ 
   * { box-sizing: border-box; }
-
+ 
   body {
     margin: 0;
     background: var(--ink);
@@ -32,18 +32,18 @@
     min-height: 100vh;
     padding: 2.5rem 1.25rem 4rem;
   }
-
+ 
   .wrap {
     max-width: 780px;
     margin: 0 auto;
   }
-
+ 
   header {
     margin-bottom: 2rem;
     border-bottom: 1px solid rgba(245,239,224,0.2);
     padding-bottom: 1.5rem;
   }
-
+ 
   h1 {
     font-family: 'Special Elite', monospace;
     font-size: 2rem;
@@ -51,20 +51,54 @@
     margin: 0 0 0.4rem;
     letter-spacing: 0.5px;
   }
-
+ 
   .subhead {
     color: rgba(245,239,224,0.65);
     font-size: 0.95rem;
     margin: 0;
   }
-
+ 
   .subhead .count {
     font-family: 'IBM Plex Mono', monospace;
     color: var(--cream-text);
     font-weight: 600;
   }
-
+ 
   /* --- form card --- */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 2rem;
+  }
+ 
+  .stat-card {
+    background: rgba(245,239,224,0.06);
+    border: 1px solid rgba(245,239,224,0.15);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+ 
+  .stat-number {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.8rem;
+    color: var(--cream-text);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+ 
+  .stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(245,239,224,0.55);
+  }
+ 
+  @media (max-width: 480px) {
+    .stats-bar { grid-template-columns: 1fr; }
+  }
+ 
   .form-card {
     background: var(--paper);
     color: var(--text-ink);
@@ -73,7 +107,7 @@
     margin-bottom: 2rem;
     box-shadow: 0 6px 0 rgba(0,0,0,0.15);
   }
-
+ 
   .form-card h2 {
     font-family: 'Special Elite', monospace;
     font-size: 1rem;
@@ -83,18 +117,18 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-
+ 
   .form-row {
     display: grid;
     grid-template-columns: 1.3fr 1.3fr 1fr 1fr;
     gap: 0.75rem;
     margin-bottom: 0.9rem;
   }
-
+ 
   @media (max-width: 620px) {
     .form-row { grid-template-columns: 1fr 1fr; }
   }
-
+ 
   label {
     display: block;
     font-size: 0.72rem;
@@ -103,7 +137,7 @@
     color: var(--text-muted);
     margin-bottom: 0.3rem;
   }
-
+ 
   input, select {
     width: 100%;
     padding: 0.5rem 0.6rem;
@@ -114,12 +148,12 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
   }
-
+ 
   input:focus, select:focus {
     outline: 2px solid var(--stamp-blue);
     outline-offset: 1px;
   }
-
+ 
   .form-footer {
     display: flex;
     align-items: center;
@@ -127,7 +161,7 @@
     gap: 1rem;
     flex-wrap: wrap;
   }
-
+ 
   .threshold-control {
     display: flex;
     align-items: center;
@@ -135,12 +169,12 @@
     font-size: 0.85rem;
     color: var(--text-muted);
   }
-
+ 
   .threshold-control input {
     width: 55px;
     text-align: center;
   }
-
+ 
   button {
     font-family: 'Inter', sans-serif;
     font-weight: 600;
@@ -151,25 +185,25 @@
     cursor: pointer;
     transition: transform 0.1s ease;
   }
-
+ 
   button:active { transform: scale(0.97); }
-
+ 
   .btn-add {
     background: var(--ink);
     color: var(--cream-text);
   }
-
+ 
   .btn-add:hover { background: var(--ink-light); }
-
+ 
   /* --- entries --- */
   #contact-name-wrap, #contact-detail-wrap {
     display: none; /* shown via JS only when channel is DM or Cold Email */
   }
-
+ 
   .company-group {
     margin-bottom: 1.1rem;
   }
-
+ 
   .company-header {
     display: flex;
     align-items: baseline;
@@ -177,7 +211,7 @@
     padding: 0 0.2rem;
     margin-bottom: 0.5rem;
   }
-
+ 
   .company-header h3 {
     font-family: 'Special Elite', monospace;
     font-weight: 400;
@@ -185,20 +219,20 @@
     color: var(--cream-text);
     margin: 0;
   }
-
+ 
   .company-header .attempt-count {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.75rem;
     color: rgba(245,239,224,0.55);
   }
-
+ 
   .contact-line {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.76rem;
     color: var(--text-muted);
     margin-top: 0.3rem;
   }
-
+ 
   .channel-tag {
     font-size: 0.72rem;
     color: var(--stamp-blue);
@@ -206,21 +240,21 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
   }
-
+ 
   .btn-ai {
     background: var(--stamp-blue);
     color: var(--cream-text);
     font-size: 0.78rem;
     padding: 0.4rem 0.7rem;
   }
-
+ 
   .btn-ai:hover { background: #223d61; }
-
+ 
   .btn-ai:disabled {
     opacity: 0.6;
     cursor: wait;
   }
-
+ 
   .modal-overlay {
     display: none;
     position: fixed;
@@ -231,9 +265,9 @@
     justify-content: center;
     padding: 1.5rem;
   }
-
+ 
   .modal-overlay.open { display: flex; }
-
+ 
   .modal-box {
     background: var(--paper);
     color: var(--text-ink);
@@ -243,14 +277,14 @@
     padding: 1.5rem;
     box-shadow: 0 10px 0 rgba(0,0,0,0.2);
   }
-
+ 
   .modal-box h3 {
     font-family: 'Special Elite', monospace;
     font-weight: 400;
     font-size: 1.05rem;
     margin: 0 0 0.9rem;
   }
-
+ 
   .modal-box textarea {
     width: 100%;
     min-height: 180px;
@@ -264,14 +298,14 @@
     line-height: 1.5;
     resize: vertical;
   }
-
+ 
   .modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 0.6rem;
     margin-top: 1rem;
   }
-
+ 
   .modal-loading {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.85rem;
@@ -279,7 +313,7 @@
     padding: 1.5rem 0;
     text-align: center;
   }
-
+ 
   .empty-state {
     text-align: center;
     padding: 3rem 1rem;
@@ -287,7 +321,7 @@
     font-family: 'Special Elite', monospace;
     font-size: 1rem;
   }
-
+ 
   .entry {
     position: relative;
     background: var(--paper);
@@ -302,21 +336,21 @@
     gap: 1rem;
     flex-wrap: wrap;
   }
-
+ 
   .entry-main { flex: 1; min-width: 200px; }
-
+ 
   .entry-company {
     font-weight: 600;
     font-size: 1.05rem;
     margin: 0 0 0.15rem;
   }
-
+ 
   .entry-role {
     font-size: 0.9rem;
     color: var(--text-muted);
     margin: 0 0 0.5rem;
   }
-
+ 
   .entry-meta {
     display: flex;
     gap: 0.9rem;
@@ -325,7 +359,7 @@
     font-size: 0.78rem;
     color: var(--text-muted);
   }
-
+ 
   .stamp {
     display: inline-block;
     font-family: 'Special Elite', monospace;
@@ -338,19 +372,19 @@
     transform: rotate(-3deg);
     white-space: nowrap;
   }
-
+ 
   .stamp-applied { color: var(--stamp-blue); }
   .stamp-interviewing { color: var(--stamp-green); }
   .stamp-offer { color: var(--stamp-green); background: rgba(47,107,79,0.08); }
   .stamp-rejected { color: var(--stamp-gray); }
-
+ 
   .followup-flag {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     flex-direction: column;
   }
-
+ 
   .followup-stamp {
     font-family: 'Special Elite', monospace;
     font-size: 0.75rem;
@@ -363,17 +397,17 @@
     transform: rotate(3deg);
     white-space: nowrap;
   }
-
+ 
   .followup-stamp.stage-2 {
     background: var(--stamp-red);
     color: var(--paper);
   }
-
+ 
   .entry-actions {
     display: flex;
     gap: 0.5rem;
   }
-
+ 
   .btn-ghost {
     background: transparent;
     border: 1px solid var(--paper-line);
@@ -381,9 +415,9 @@
     font-size: 0.78rem;
     padding: 0.4rem 0.7rem;
   }
-
+ 
   .btn-ghost:hover { background: var(--paper-dark); }
-
+ 
   .btn-danger {
     background: transparent;
     border: 1px solid transparent;
@@ -391,9 +425,9 @@
     font-size: 0.78rem;
     padding: 0.4rem 0.5rem;
   }
-
+ 
   .btn-danger:hover { color: var(--stamp-red); }
-
+ 
   .status-msg {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 0.78rem;
@@ -405,12 +439,27 @@
 </head>
 <body>
 <div class="wrap">
-
+ 
   <header>
     <h1>Application log</h1>
     <p class="subhead">Tracking <span class="count" id="count-display">0</span> applications. Anything gone quiet gets flagged automatically.</p>
   </header>
-
+ 
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number" id="stat-total">0</div>
+      <div class="stat-label">Applications logged</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="stat-pending">0</div>
+      <div class="stat-label">Follow-ups pending</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" id="stat-sent">0</div>
+      <div class="stat-label">Follow-ups sent</div>
+    </div>
+  </div>
+ 
   <div class="form-card">
     <h2>Log a new application</h2>
     <div class="form-row">
@@ -469,13 +518,13 @@
       <button class="btn-add" id="btn-add">Add application</button>
     </div>
   </div>
-
+ 
   <div id="entries-container"></div>
-
+ 
   <p class="status-msg" id="status-msg">Loading your log…</p>
-
+ 
 </div>
-
+ 
 <div class="modal-overlay" id="draft-modal">
   <div class="modal-box">
     <h3 id="draft-modal-title">Drafting your follow-up…</h3>
@@ -488,11 +537,11 @@
     </div>
   </div>
 </div>
-
+ 
 <script>
 /*
   HOW THIS WORKS (read this if you're learning to code from this file):
-
+ 
   1. We keep all applications in one JS array called `applications`.
   2. Every time it changes (add / delete / mark followed up), we save
      the whole array as one JSON string using window.storage.set().
@@ -502,10 +551,10 @@
      every time something changes. This "re-render from data" pattern
      is one of the most useful habits in front-end coding.
 */
-
+ 
 const STORAGE_KEY = 'applications';
 let applications = [];
-
+ 
 /*
   STORAGE ABSTRACTION
   --------------------
@@ -517,13 +566,13 @@ let applications = [];
        environment to talk to anymore. In that case we fall back to
        the browser's built-in localStorage, which saves data on the
        visitor's own device/browser instead.
-
+ 
   Everything else in the app just calls storageGet/storageSet below,
   so the rest of the code doesn't need to know or care which one is
   actually being used.
 */
 const hasClaudeStorage = typeof window.storage !== 'undefined';
-
+ 
 async function storageGet(key) {
   if (hasClaudeStorage) {
     try {
@@ -536,7 +585,7 @@ async function storageGet(key) {
   // Fallback: plain browser localStorage
   return localStorage.getItem(key);
 }
-
+ 
 async function storageSet(key, value) {
   if (hasClaudeStorage) {
     try {
@@ -553,14 +602,14 @@ async function storageSet(key, value) {
     return false;
   }
 }
-
+ 
 const STATUS_CLASS = {
   'Applied': 'stamp-applied',
   'Interviewing': 'stamp-interviewing',
   'Offer': 'stamp-offer',
   'Rejected': 'stamp-rejected'
 };
-
+ 
 // Load saved data when the page opens
 async function loadApplications() {
   const statusEl = document.getElementById('status-msg');
@@ -571,7 +620,7 @@ async function loadApplications() {
     : 'Your data is saved in this browser on this device.';
   render();
 }
-
+ 
 // Save the current array back to storage
 async function saveApplications() {
   const ok = await storageSet(STORAGE_KEY, JSON.stringify(applications));
@@ -580,7 +629,7 @@ async function saveApplications() {
       'Could not save just now -- your changes are visible but may not persist.';
   }
 }
-
+ 
 function daysSince(dateStr) {
   const applied = new Date(dateStr);
   const today = new Date();
@@ -589,16 +638,32 @@ function daysSince(dateStr) {
   const diffMs = today - applied;
   return Math.max(0, Math.round(diffMs / (1000 * 60 * 60 * 24)));
 }
-
+ 
+function updateStats() {
+  const total = applications.length;
+ 
+  // "Pending" = applications currently showing an active follow-up flag right now
+  const pending = applications.filter(a => getFollowupStage(a) > 0).length;
+ 
+  // "Sent" = total follow-up actions marked as sent across every application
+  // (an app that had both Follow-up 1 and Follow-up 2 sent counts as 2 here)
+  const sent = applications.reduce((sum, a) => sum + (a.followUpsSent || 0), 0);
+ 
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-sent').textContent = sent;
+}
+ 
 function render() {
   const container = document.getElementById('entries-container');
   document.getElementById('count-display').textContent = applications.length;
-
+  updateStats();
+ 
   if (applications.length === 0) {
     container.innerHTML = '<div class="empty-state">Log is empty. Add your first application above.</div>';
     return;
   }
-
+ 
   // Group every attempt by company name (case-insensitive) so someone
   // who applied to Zomato 10 different ways sees them together, not
   // as 10 unrelated cards.
@@ -608,7 +673,7 @@ function render() {
     if (!groups[key]) groups[key] = { displayName: app.company, entries: [] };
     groups[key].entries.push(app);
   });
-
+ 
   // Companies with an active follow-up flag float to the top
   const groupList = Object.values(groups).sort((a, b) => {
     const aFlag = a.entries.some(needsFollowup) ? 1 : 0;
@@ -618,17 +683,17 @@ function render() {
     const bLatest = Math.max(...b.entries.map(e => new Date(e.dateApplied)));
     return bLatest - aLatest;
   });
-
+ 
   container.innerHTML = groupList.map(group => {
     // Within a company, show most recent attempt first
     const entries = [...group.entries].sort((a, b) => new Date(b.dateApplied) - new Date(a.dateApplied));
-
+ 
     const rows = entries.map(app => {
       const days = daysSince(app.dateApplied);
       const stage = getFollowupStage(app);
       const stampClass = STATUS_CLASS[app.status] || 'stamp-applied';
       const hasContact = app.contactName || app.contactDetail;
-
+ 
       let flagHtml = '';
       let actionHtml = '';
       if (stage === 1) {
@@ -644,7 +709,7 @@ function render() {
       } else if ((app.followUpsSent || 0) >= 2) {
         flagHtml = '<span class="channel-tag" style="color:var(--stamp-gray)">No reply after 2 follow-ups</span>';
       }
-
+ 
       return `
         <div class="entry" data-id="${app.id}">
           <div class="entry-main">
@@ -665,7 +730,7 @@ function render() {
         </div>
       `;
     }).join('');
-
+ 
     return `
       <div class="company-group">
         <div class="company-header">
@@ -677,30 +742,30 @@ function render() {
     `;
   }).join('');
 }
-
+ 
 // Returns 0 = no follow-up needed, 1 = time for follow-up 1, 2 = time for follow-up 2
 // followUpsSent tracks how many have already been marked as sent (0, 1, or 2 = maxed out)
 function getFollowupStage(app) {
   if (app.status === 'Offer' || app.status === 'Rejected') return 0;
-
+ 
   const sent = app.followUpsSent || 0;
   const daysQuiet = daysSince(app.lastTouched || app.dateApplied);
-
+ 
   if (sent === 0 && daysQuiet >= (app.threshold1 || 7)) return 1;
   if (sent === 1 && daysQuiet >= (app.threshold2 || 5)) return 2;
   return 0; // either not enough days passed yet, or already sent both follow-ups
 }
-
+ 
 function needsFollowup(app) {
   return getFollowupStage(app) > 0;
 }
-
+ 
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
-
+ 
 async function addApplication() {
   const company = document.getElementById('in-company').value.trim();
   const role = document.getElementById('in-role').value.trim();
@@ -711,12 +776,12 @@ async function addApplication() {
   const channel = document.getElementById('in-channel').value;
   const contactName = document.getElementById('in-contact-name').value.trim();
   const contactDetail = document.getElementById('in-contact-detail').value.trim();
-
+ 
   if (!company || !role) {
     alert('Add a company and role first.');
     return;
   }
-
+ 
   applications.push({
     id: Date.now().toString(),
     company,
@@ -731,7 +796,7 @@ async function addApplication() {
     contactName,
     contactDetail
   });
-
+ 
   document.getElementById('in-company').value = '';
   document.getElementById('in-role').value = '';
   document.getElementById('in-status').value = 'Applied';
@@ -739,11 +804,11 @@ async function addApplication() {
   document.getElementById('in-contact-name').value = '';
   document.getElementById('in-contact-detail').value = '';
   document.getElementById('in-date').valueAsDate = new Date();
-
+ 
   render();
   await saveApplications();
 }
-
+ 
 async function markFollowedUp(id) {
   const app = applications.find(a => a.id === id);
   if (app) {
@@ -753,53 +818,53 @@ async function markFollowedUp(id) {
     await saveApplications();
   }
 }
-
+ 
 async function deleteEntry(id) {
   applications = applications.filter(a => a.id !== id);
   render();
   await saveApplications();
 }
-
+ 
 function updateContactFieldVisibility() {
   const channel = document.getElementById('in-channel').value;
   const showContact = channel === 'LinkedIn DM' || channel === 'Cold Email';
   document.getElementById('contact-name-wrap').style.display = showContact ? 'block' : 'none';
   document.getElementById('contact-detail-wrap').style.display = showContact ? 'block' : 'none';
 }
-
+ 
 // --- AI-drafted follow-up email ---
-
+ 
 function openDraftModal() {
   document.getElementById('draft-modal').classList.add('open');
 }
-
+ 
 function closeDraftModal() {
   document.getElementById('draft-modal').classList.remove('open');
 }
-
+ 
 document.getElementById('btn-close-draft').addEventListener('click', closeDraftModal);
-
+ 
 async function draftFollowupEmail(id) {
   const app = applications.find(a => a.id === id);
   if (!app) return;
-
+ 
   const stage = getFollowupStage(app);
   const titleEl = document.getElementById('draft-modal-title');
   const bodyEl = document.getElementById('draft-modal-body');
   const copyBtn = document.getElementById('btn-copy-draft');
-
+ 
   titleEl.textContent = `Drafting follow-up ${stage} for ${app.company}…`;
   bodyEl.innerHTML = '<div class="modal-loading">Thinking of what to say…</div>';
   copyBtn.style.display = 'none';
   openDraftModal();
-
+ 
   const days = daysSince(app.dateApplied);
   const tone = stage === 1
     ? 'This is the FIRST follow-up. Keep it light, brief, and low-pressure -- just a friendly nudge.'
     : 'This is the SECOND and final follow-up after the first one got no reply. Keep it short, polite, and give them an easy, low-pressure way to close the loop (e.g. it is okay if the answer is no).';
-
+ 
   const prompt = `Write a short, natural follow-up message a student can send about a job/internship application. Do not use placeholders like [Your Name] -- write it as ready-to-send text with a generic friendly sign-off instead.
-
+ 
 Details:
 - Company: ${app.company}
 - Role: ${app.role}
@@ -808,9 +873,9 @@ Details:
 - Contact person: ${app.contactName || 'not specified, keep it general'}
 - ${tone}
 - Match the tone to the channel: a LinkedIn DM should be more casual/short; an email should be a bit more structured with a one-line subject suggestion at the top.
-
+ 
 Output ONLY the message text (with a subject line first if it's an email), nothing else -- no preamble, no explanation.`;
-
+ 
   try {
     // Notice this now calls OUR OWN backend function (running on Netlify),
     // not api.anthropic.com directly. Our function holds the secret key
@@ -820,13 +885,13 @@ Output ONLY the message text (with a subject line first if it's an email), nothi
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt })
     });
-
+ 
     const data = await response.json();
-
+ 
     if (!response.ok) throw new Error(data.error || 'Request failed');
-
+ 
     const draftText = (data.draft || '').trim();
-
+ 
     titleEl.textContent = `Follow-up ${stage} draft — ${app.company}`;
     bodyEl.innerHTML = `<textarea id="draft-text-area" readonly>${escapeHtml(draftText)}</textarea>`;
     copyBtn.style.display = 'inline-block';
@@ -840,7 +905,7 @@ Output ONLY the message text (with a subject line first if it's an email), nothi
     copyBtn.style.display = 'none';
   }
 }
-
+ 
 document.getElementById('btn-copy-draft').addEventListener('click', () => {
   const ta = document.getElementById('draft-text-area');
   if (ta) {
@@ -851,13 +916,14 @@ document.getElementById('btn-copy-draft').addEventListener('click', () => {
     });
   }
 });
-
+ 
 document.getElementById('in-channel').addEventListener('change', updateContactFieldVisibility);
 document.getElementById('btn-add').addEventListener('click', addApplication);
 document.getElementById('in-date').valueAsDate = new Date();
 updateContactFieldVisibility();
-
+ 
 loadApplications();
 </script>
 </body>
 </html>
+ 
