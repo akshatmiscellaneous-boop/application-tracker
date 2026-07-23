@@ -242,6 +242,13 @@
     letter-spacing: 0.4px;
   }
 
+  .status-quip {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-left: 0.3rem;
+  }
+
   .btn-ai {
     background: var(--stamp-blue);
     color: var(--cream-text);
@@ -732,7 +739,8 @@ function render() {
             <p class="entry-role">${escapeHtml(app.role)} <span class="channel-tag">· ${escapeHtml(app.channel || 'Other')}</span></p>
             <div class="entry-meta">
               <span>Applied ${days === 0 ? 'today' : days + ' day' + (days === 1 ? '' : 's') + ' ago'}</span>
-              <span class="stamp ${stampClass}">${STATUS_DISPLAY[app.status] || app.status}</span>
+              <span class="stamp ${stampClass}">${app.status}</span>
+              <span class="status-quip">${STATUS_DISPLAY[app.status] || ''}</span>
             </div>
             ${hasContact ? `<div class="contact-line">Contact: ${escapeHtml(app.contactName || '—')}${app.contactDetail ? ' · ' + escapeHtml(app.contactDetail) : ''}</div>` : ''}
           </div>
