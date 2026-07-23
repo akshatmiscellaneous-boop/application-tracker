@@ -388,6 +388,25 @@
   .stamp-offer { color: var(--stamp-green); background: rgba(47,107,79,0.08); }
   .stamp-rejected { color: var(--stamp-gray); }
 
+  .status-select {
+    display: inline-block;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.3rem 0.5rem;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .status-select option {
+    font-family: 'Inter', sans-serif;
+    text-transform: none;
+    color: var(--text-ink);
+  }
+
   .followup-flag {
     display: flex;
     align-items: center;
@@ -739,7 +758,12 @@ function render() {
             <p class="entry-role">${escapeHtml(app.role)} <span class="channel-tag">· ${escapeHtml(app.channel || 'Other')}</span></p>
             <div class="entry-meta">
               <span>Applied ${days === 0 ? 'today' : days + ' day' + (days === 1 ? '' : 's') + ' ago'}</span>
-              <span class="stamp ${stampClass}">${app.status}</span>
+              <select class="status-select ${stampClass}" onchange="updateStatus('${app.id}', this.value)">
+                <option value="Applied" ${app.status === 'Applied' ? 'selected' : ''}>Applied</option>
+                <option value="Interviewing" ${app.status === 'Interviewing' ? 'selected' : ''}>Interviewing</option>
+                <option value="Offer" ${app.status === 'Offer' ? 'selected' : ''}>Offer</option>
+                <option value="Rejected" ${app.status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
               <span class="status-quip">${STATUS_DISPLAY[app.status] || ''}</span>
             </div>
             ${hasContact ? `<div class="contact-line">Contact: ${escapeHtml(app.contactName || '—')}${app.contactDetail ? ' · ' + escapeHtml(app.contactDetail) : ''}</div>` : ''}
@@ -837,6 +861,19 @@ async function markFollowedUp(id) {
   const app = applications.find(a => a.id === id);
   if (app) {
     app.followUpsSent = (app.followUpsSent || 0) + 1;
+    app.lastTouched = new Date().toISOString().slice(0,10);
+    render();
+    await saveApplications();
+  }
+}
+
+async function updateStatus(id, newStatus) {
+  const app = applications.find(a => a.id === id);
+  if (app) {
+    app.status = newStatus;
+    // Moving to Interviewing/Offer/Rejected means things are moving --
+    // reset the silence clock so it doesn't immediately show a stale
+    // follow-up flag based on the old status.
     app.lastTouched = new Date().toISOString().slice(0,10);
     render();
     await saveApplications();
