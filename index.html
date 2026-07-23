@@ -464,6 +464,16 @@
     margin-top: 1.5rem;
     text-align: center;
   }
+  @keyframes confetti-fall {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.9;
+    }
+    100% {
+      transform: translate(var(--drift), 105vh) rotate(var(--rotate));
+      opacity: 0.4;
+    }
+  }
 </style>
 </head>
 <body>
@@ -867,9 +877,52 @@ async function markFollowedUp(id) {
   }
 }
 
+// --- Celebration effect for landing an offer ---
+// Pure vanilla JS/CSS confetti -- no external library needed. Creates a
+// bunch of small colored divs, gives each one a random starting position,
+// color, and fall speed, then removes them once the animation finishes.
+function celebrateOffer() {
+  const colors = ['#A6321D', '#2F6B4F', '#2C4A73', '#E3B23C', '#F5EFE0'];
+  const container = document.createElement('div');
+  container.style.position = 'fixed';
+  container.style.inset = '0';
+  container.style.pointerEvents = 'none';
+  container.style.zIndex = '999';
+  document.body.appendChild(container);
+
+  const pieceCount = 70;
+  for (let i = 0; i < pieceCount; i++) {
+    const piece = document.createElement('div');
+    const size = 6 + Math.random() * 6;
+    const startX = Math.random() * 100;
+    const duration = 2.2 + Math.random() * 1.3;
+    const delay = Math.random() * 0.3;
+    const rotateAmount = 360 + Math.random() * 360;
+    const drift = (Math.random() - 0.5) * 200;
+
+    piece.style.position = 'absolute';
+    piece.style.top = '-20px';
+    piece.style.left = startX + 'vw';
+    piece.style.width = size + 'px';
+    piece.style.height = size * 0.6 + 'px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.opacity = '0.9';
+    piece.style.borderRadius = '1px';
+    piece.style.setProperty('--drift', drift + 'px');
+    piece.style.setProperty('--rotate', rotateAmount + 'deg');
+    piece.style.animation = `confetti-fall ${duration}s ease-in ${delay}s forwards`;
+
+    container.appendChild(piece);
+  }
+
+  // Clean up after the longest possible animation finishes
+  setTimeout(() => container.remove(), 4200);
+}
+
 async function updateStatus(id, newStatus) {
   const app = applications.find(a => a.id === id);
   if (app) {
+    const wasAlreadyOffer = app.status === 'Offer';
     app.status = newStatus;
     // Moving to Interviewing/Offer/Rejected means things are moving --
     // reset the silence clock so it doesn't immediately show a stale
@@ -877,6 +930,12 @@ async function updateStatus(id, newStatus) {
     app.lastTouched = new Date().toISOString().slice(0,10);
     render();
     await saveApplications();
+
+    // Only celebrate when someone actively changes an existing entry TO
+    // Offer -- not when Offer was simply picked in the add-application form.
+    if (newStatus === 'Offer' && !wasAlreadyOffer) {
+      celebrateOffer();
+    }
   }
 }
 
