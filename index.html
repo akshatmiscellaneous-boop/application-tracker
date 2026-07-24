@@ -100,6 +100,70 @@
     .stats-bar { grid-template-columns: 1fr; }
   }
 
+  .progress-wrap {
+    margin-bottom: 1.2rem;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: rgba(245,239,224,0.65);
+    margin-bottom: 0.35rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(245,239,224,0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--stamp-blue), var(--stamp-green));
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  .badges-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .badge-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid rgba(245,239,224,0.2);
+    color: rgba(245,239,224,0.35);
+    background: rgba(245,239,224,0.04);
+    transition: all 0.2s ease;
+  }
+
+  .badge-chip.unlocked {
+    color: var(--cream-text);
+    border-color: rgba(227,178,60,0.5);
+    background: rgba(227,178,60,0.12);
+  }
+
+  .badge-chip .badge-icon {
+    filter: grayscale(1);
+    opacity: 0.4;
+  }
+
+  .badge-chip.unlocked .badge-icon {
+    filter: none;
+    opacity: 1;
+  }
+
   .form-card {
     background: var(--paper);
     color: var(--text-ink);
@@ -184,7 +248,11 @@
     border-radius: 5px;
     padding: 0.65rem 1.2rem;
     cursor: pointer;
-    transition: transform 0.1s ease;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
+  }
+
+  button:hover:not(:disabled) {
+    transform: translateY(-1px);
   }
 
   button:active { transform: scale(0.97); }
@@ -343,6 +411,21 @@
     align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.18);
+  }
+
+  .entry.just-added {
+    animation: entry-pop-in 0.4s ease-out;
+  }
+
+  @keyframes entry-pop-in {
+    0% { opacity: 0; transform: translateY(-10px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
   .entry-main { flex: 1; min-width: 200px; }
@@ -499,9 +582,22 @@
     </div>
   </div>
 
+  <div class="progress-wrap" id="progress-wrap" style="display:none;">
+    <div class="progress-label">
+      <span>Response rate</span>
+      <span id="progress-percent">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%;"></div>
+    </div>
+  </div>
+
+  <div class="badges-strip" id="badges-strip"></div>
+
   <div class="form-card">
     <h2>Log a new application</h2>
-    <div class="form-row">
+
+    <div class="form-row" id="single-company-row">
       <div>
         <label for="in-company">Company</label>
         <input type="text" id="in-company" placeholder="e.g. Zomato">
@@ -596,6 +692,7 @@
 
 const STORAGE_KEY = 'applications';
 let applications = [];
+let justAddedId = null; // tracks the most recently added entry, so only it gets the pop-in animation
 
 /*
   STORAGE ABSTRACTION
@@ -704,6 +801,51 @@ function updateStats() {
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-pending').textContent = pending;
   document.getElementById('stat-sent').textContent = sent;
+
+  updateProgressBar(total);
+  updateBadges(total, sent);
+}
+
+function updateProgressBar(total) {
+  const progressWrap = document.getElementById('progress-wrap');
+  if (total === 0) {
+    progressWrap.style.display = 'none';
+    return;
+  }
+  progressWrap.style.display = 'block';
+
+  // "Response rate" = share of applications that moved past plain "Applied"
+  // into Interviewing, Offer, or Rejected -- i.e. you actually heard something back.
+  const responded = applications.filter(a => a.status !== 'Applied').length;
+  const percent = Math.round((responded / total) * 100);
+
+  document.getElementById('progress-fill').style.width = percent + '%';
+  document.getElementById('progress-percent').textContent = percent + '%';
+}
+
+// Badge definitions: each has an icon, label, and a check function that
+// looks at the current data to decide if it's unlocked. Purely derived --
+// no separate storage needed, so it can never get out of sync.
+const BADGE_DEFS = [
+  { icon: '🎯', label: 'First application', check: (apps) => apps.length >= 1 },
+  { icon: '💪', label: '10 logged', check: (apps) => apps.length >= 10 },
+  { icon: '🚀', label: '25 logged', check: (apps) => apps.length >= 25 },
+  { icon: '✉️', label: '5 follow-ups sent', check: (apps) => apps.reduce((s,a) => s + (a.followUpsSent||0), 0) >= 5 },
+  { icon: '🗣️', label: 'First interview', check: (apps) => apps.some(a => a.status === 'Interviewing' || a.status === 'Offer') },
+  { icon: '🎉', label: 'First offer', check: (apps) => apps.some(a => a.status === 'Offer') },
+];
+
+function updateBadges() {
+  const strip = document.getElementById('badges-strip');
+  strip.innerHTML = BADGE_DEFS.map(badge => {
+    const unlocked = badge.check(applications);
+    return `
+      <div class="badge-chip ${unlocked ? 'unlocked' : ''}" title="${unlocked ? 'Unlocked!' : 'Locked'}">
+        <span class="badge-icon">${badge.icon}</span>
+        <span>${badge.label}</span>
+      </div>
+    `;
+  }).join('');
 }
 
 function render() {
@@ -763,7 +905,7 @@ function render() {
       }
 
       return `
-        <div class="entry" data-id="${app.id}">
+        <div class="entry ${app.id === justAddedId ? 'just-added' : ''}" data-id="${app.id}">
           <div class="entry-main">
             <p class="entry-role">${escapeHtml(app.role)} <span class="channel-tag">· ${escapeHtml(app.channel || 'Other')}</span></p>
             <div class="entry-meta">
@@ -799,6 +941,9 @@ function render() {
       </div>
     `;
   }).join('');
+
+  // Reset so the pop-in animation doesn't replay on the next re-render
+  justAddedId = null;
 }
 
 // Returns 0 = no follow-up needed, 1 = time for follow-up 1, 2 = time for follow-up 2
@@ -840,8 +985,9 @@ async function addApplication() {
     return;
   }
 
+  const newId = Date.now().toString();
   applications.push({
-    id: Date.now().toString(),
+    id: newId,
     company,
     role,
     status,
@@ -854,6 +1000,8 @@ async function addApplication() {
     contactName,
     contactDetail
   });
+
+  justAddedId = newId;
 
   document.getElementById('in-company').value = '';
   document.getElementById('in-role').value = '';
